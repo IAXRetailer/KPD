@@ -1,1 +1,1 @@
-# KPD
+# KPD | A Simple way to download from kemono
