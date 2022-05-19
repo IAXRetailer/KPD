@@ -44,10 +44,13 @@ def makedir(folder,foldername):
     os.chdir(folder)
     if foldername in os.listdir():
         litelogger.warnlog("The folder \""+foldername+"\" has existed")
+        os.chdir(here)
+        return False
     else:
         os.mkdir(foldername)
         litelogger.infolog("Make folder \""+foldername+"\"")
-    os.chdir(here)
+        os.chdir(here)
+        return True
 def getmaxobject(obj):
     for i in obj:
         if "Showing" in i:
@@ -133,6 +136,10 @@ def addtutocache(resourcefolder,artist,ttlist,tulist):
         f.write(i)
     f.close()
     litelogger.infolog("Write title into urlcache.txt")
+
+def parsesonpage(url,title,artist,resourcefolder):
+    return
+
 def kemono(resourcefolder,url):
     if "?o=0" in url:
         url.replace("?o=0","")
@@ -148,4 +155,18 @@ def kemono(resourcefolder,url):
         url=url.replace(oldo, newo)
         tt,urllist=kemonoC(resourcefolder,url)
         addtutocache(resourcefolder,artist,tt,urllist)
-        
+    urllist=rdcache(resourcefolder+"/lib/"+artist, "urlcache.txt")
+    titlelist=rdcache(resourcefolder+"/lib/"+artist, "title.txt")
+    unfolderCha="\/:*?\">|<"
+    localfolders=[]
+    for i in titlelist:
+        for j in list(unfolderCha):
+            i=i.replace(j, "")
+        localfolders.append(i)
+        odi=0
+        rslt=makedir(resourcefolder+"/lib/"+artist, i)
+        while not rslt:
+            odi+=1
+            i=i+" "+str(odi)
+            rslt=makedir(resourcefolder+"/lib/"+artist, i)
+        localfolders.append(i)

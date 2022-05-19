@@ -1,4 +1,5 @@
 import api
+import os
 from colorama import Fore
 title='''
 ################################################################################
@@ -28,6 +29,15 @@ title='''
 
 '''
 print(Fore.GREEN+title)
+here=os.getcwd()
+if "resource" not in os.listdir():
+    api.litelogger.warnlog("There does't have a resource folder")
+    api.litelogger.infolog("Make a resource folder...")
+    os.mkdir("resource")
+    os.chdir("./resource")
+    os.mkdir("lib")
+    os.mkdir("cache")
+    os.chdir(here)
 api.litelogger.infolog("KEMONO DOWNLOADER STARTS SUCCESSFULLY!")
 api.litelogger.infolog("The sofeware is all free in \"https://github.com/IAXRetailer/KPD\"(Public)")
 api.kemono("./resource","https://kemono.party/fanbox/user/3316400")

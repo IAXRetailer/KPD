@@ -33,8 +33,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
           docker run -v $GITHUB_WORKSPACE:/src cdrx/pyinstaller-windows:latest 'pyinstaller -F --clean -y --dist ./ --workpath /tmp main.py'
           zip -r $GITHUB_WORKSPACE/main.zip $GITHUB_WORKSPACE/main.exe
          
@@ -45,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.date.outputs.today }} 
-          release_name: Release ${{ steps.date.outputs.today }}
+          release_name: AutoRelease ${{ steps.date.outputs.today }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
