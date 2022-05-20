@@ -38,6 +38,44 @@ def getartist(calist):
             break
     litelogger.infolog("Artist "+i)
     return i
+def getelements(text):
+    tr=BeautifulSoup(text,"lxml")
+    rtr=tr.find_all("h2")
+    elements=[]
+    for i in rtr:
+        i=str(i)
+        i=i.split("</h2")[0].split(">")[1]
+        elements.append(i)
+    return elements
+
+def keymapping(keyname,vaule):
+    litelogger.infolog("Load "+keyname)
+    if keyname == "Comments":
+        litelogger.infolog("Comments Pass")
+    if keyname == "Downloads":
+        rawlist=vaule.split("</a>")
+        resulturls=[]
+        for i in rawlist:
+            if "href" in i:
+                aurl=i.split("href=\"")[1].split("\"")[0]
+                aurl="https://kemono.party"+aurl
+                resulturls.append(aurl)
+                litelogger.infolog("Get "+aurl)
+        return resulturls
+    if keyname == "Content":
+        result=vaule.split("class=\"post__content\">")[1].split("</div")[0]
+        return result
+    if keyname == "Files":
+        rawlist=vaule.split("</a>")
+        resulturls=[]
+        for i in rawlist:
+            if "data-src=\"" in i:
+                aurl=i.split("data-src=\"")[1].split("\"")[0].replace("/thumbnail","")
+                aurl="https://kemono.party"+aurl
+                resulturls.append(aurl)
+                litelogger.infolog("Get "+aurl)
+        return resulturls
+
 
 def makedir(folder,foldername):
     here=os.getcwd()
@@ -138,6 +176,7 @@ def addtutocache(resourcefolder,artist,ttlist,tulist):
     litelogger.infolog("Write title into urlcache.txt")
 
 def parsesonpage(url,title,artist,resourcefolder):
+    
     return
 
 def kemono(resourcefolder,url):
@@ -170,3 +209,8 @@ def kemono(resourcefolder,url):
             i=i+" "+str(odi)
             rslt=makedir(resourcefolder+"/lib/"+artist, i)
         localfolders.append(i)
+        os.remove(resourcefolder+"/lib/"+artist+"/title.txt")
+        litelogger.infolog("Remove title.txt")
+        os.remove(resourcefolder+"/lib/"+artist+"/urlcache.txt")
+        litelogger.infolog("Remove urlcache.txt")
+    
