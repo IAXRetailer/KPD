@@ -205,18 +205,21 @@ def kemono(resourcefolder,url):
         addtutocache(resourcefolder,artist,tt,urllist)
     urllist=rdcache(resourcefolder+"/lib/"+artist, "urlcache.txt")
     titlelist=rdcache(resourcefolder+"/lib/"+artist, "title.txt")
-    unfolderCha="\/:*?\">|<"
+    unfolderCha=["\\","/","|","\"","'","<",">","?","*",":"]
     localfolders=[]
     for i in titlelist:
-        for j in list(unfolderCha):
-            fin=i.replace(j, "")
+        for j in unfolderCha:
+            i=i.replace(j, "")
+            fin=i
         odi=0
+        #print(fin)
         rslt=makedir(resourcefolder+"/lib/"+artist, fin)
         while not rslt:
             odi+=1
             fin=i+" "+str(odi)
             rslt=makedir(resourcefolder+"/lib/"+artist, fin)
-        print(fin)
+        
+        #print(fin)
         localfolders.append(fin)
     #print(localfolders)
     #print(titlelist)

@@ -1,5 +1,0 @@
-<h2 class="post-card__heading">
-<a href="/fanbox/user/20033303/post/3130109">
-          荧
-        </a>
-</h2>
