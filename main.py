@@ -40,5 +40,9 @@ if "resource" not in os.listdir():
     os.chdir(here)
 api.litelogger.infolog("KEMONO DOWNLOADER STARTS SUCCESSFULLY!")
 api.litelogger.infolog("The sofeware is all free in \"https://github.com/IAXRetailer/KPD\"(Public)")
-api.kemono("./resource","https://kemono.party/fanbox/user/3316400")
+url=input("Input an artist'url in kemono->")
+artist=api.kemono("./resource",url)
+arialist=api.aria2mklist("./resource",artist)
+for i in arialist:
+    os.system(i)
 #test action

@@ -38,6 +38,7 @@ def getartist(calist):
             break
     litelogger.infolog("Artist "+i)
     return i
+
 def getelements(text):
     tr=BeautifulSoup(text,"lxml")
     rtr=tr.find_all("h2")
@@ -64,6 +65,7 @@ def keymapping(keyname,vaule):
         return resulturls
     if keyname == "Content":
         result=vaule.split("class=\"post__content\">")[1].split("</div")[0]
+        litelogger.infolog("Get content")
         return result
     if keyname == "Files":
         rawlist=vaule.split("</a>")
@@ -175,9 +177,16 @@ def addtutocache(resourcefolder,artist,ttlist,tulist):
     f.close()
     litelogger.infolog("Write title into urlcache.txt")
 
-def parsesonpage(url,title,artist,resourcefolder):
-    
-    return
+def parsesonpage(url):
+    try:
+        res=requests.get(url,headers=headers)
+        vaulelist=res.text.split("</h2>")
+        vaulelist.pop(0)
+        return getelements(res.text),vaulelist 
+    except:
+        litelogger.errorlog("Connect ERROR")
+        os.system("pause")
+        return None,None
 
 def kemono(resourcefolder,url):
     if "?o=0" in url:
@@ -200,17 +209,50 @@ def kemono(resourcefolder,url):
     localfolders=[]
     for i in titlelist:
         for j in list(unfolderCha):
-            i=i.replace(j, "")
-        localfolders.append(i)
+            fin=i.replace(j, "")
         odi=0
-        rslt=makedir(resourcefolder+"/lib/"+artist, i)
+        rslt=makedir(resourcefolder+"/lib/"+artist, fin)
         while not rslt:
             odi+=1
-            i=i+" "+str(odi)
-            rslt=makedir(resourcefolder+"/lib/"+artist, i)
-        localfolders.append(i)
-        os.remove(resourcefolder+"/lib/"+artist+"/title.txt")
-        litelogger.infolog("Remove title.txt")
-        os.remove(resourcefolder+"/lib/"+artist+"/urlcache.txt")
-        litelogger.infolog("Remove urlcache.txt")
-    
+            fin=i+" "+str(odi)
+            rslt=makedir(resourcefolder+"/lib/"+artist, fin)
+        print(fin)
+        localfolders.append(fin)
+    #print(localfolders)
+    #print(titlelist)
+    #os.system("pause")
+    os.remove(resourcefolder+"/lib/"+artist+"/title.txt")
+    litelogger.infolog("Remove title.txt")
+    os.remove(resourcefolder+"/lib/"+artist+"/urlcache.txt")
+    litelogger.infolog("Remove urlcache.txt")
+    arialist=[]
+    makedir(resourcefolder+"/url", artist)
+    for i,j in zip(urllist,localfolders):
+        keyname,vaule=parsesonpage(i)
+        Down=[]
+        File=[]
+        Cont=""
+        for key,vau in zip(keyname,vaule):
+            if key == "Files":
+                File=keymapping(key, vau)
+            if key == "Downloads":
+                Down=keymapping(key, vau)
+            if key == "Content":
+                Cont=keymapping(key, vau)
+        target=resourcefolder+"/lib/"+artist+"/"+j+"/content.txt"
+        f=open(target,"w",encoding="utf-8")
+        f.write(Cont)
+        f.close()
+        litelogger.infolog("Make "+artist+" in "+resourcefolder+"/url")
+        ariatodolist=resourcefolder+"/url/"+artist+"/"+j+".txt"
+        litelogger.infolog("Make "+j+".txt")
+        arialist.append(ariatodolist)
+        f=open(ariatodolist,"w",encoding="utf-8")
+        for n in File:
+            n=n+"\n"
+            f.write(n)
+        for n in Down:
+            n=n+"\n"
+            f.write(n)
+        f.close()
+    return artist
