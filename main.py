@@ -41,6 +41,9 @@ if "resource" not in os.listdir():
 api.litelogger.infolog("KEMONO DOWNLOADER STARTS SUCCESSFULLY!")
 api.litelogger.infolog("The sofeware is all free in \"https://github.com/IAXRetailer/KPD\"(Public)")
 url=input("Input an artist'url in kemono->")
+if "KPD://" in url:
+    url=url.replace("KPD://","")
+    url=api.b64d(url)
 artist=api.kemono("./resource",url)
 customargvs=open("customargvs.txt","r",encoding="utf-8").read()
 arialist=api.aria2mklist("./resource",artist,customargvs)
