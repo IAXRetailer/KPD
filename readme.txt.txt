@@ -1,0 +1,2 @@
+自行修改customargvs.txt，里面内容会在生成下载命令时并入，并成为下载参数
+参数详见aria2.conf，或者自行baidu

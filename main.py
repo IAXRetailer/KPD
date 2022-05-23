@@ -42,7 +42,8 @@ api.litelogger.infolog("KEMONO DOWNLOADER STARTS SUCCESSFULLY!")
 api.litelogger.infolog("The sofeware is all free in \"https://github.com/IAXRetailer/KPD\"(Public)")
 url=input("Input an artist'url in kemono->")
 artist=api.kemono("./resource",url)
-arialist=api.aria2mklist("./resource",artist)
+customargvs=open("customargvs.txt","r",encoding="utf-8").read()
+arialist=api.aria2mklist("./resource",artist,customargvs)
 for i in arialist:
     os.system(i)
 #test action
