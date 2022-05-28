@@ -8,9 +8,10 @@ def sendtorpc(resourcefolder,artist,rpcport):
         urllists=open(resourcefolder+"/url/"+artist+"/"+i,"r",encoding="utf-8").read().splitlines()
         b=i.replace(".txt","")
         for url in urllists:
+            dicta={'refer': url,'dir':resourcefolder+"/lib/"+artist+"/"+b}
             jsonreq = json.dumps({'jsonrpc': '2.0', 'id': 'qwer',
                                         'method': 'aria2.addUri',#"\""+resourcefolder+"/lib/"+artist+"/"+b+"\""
-                                        'params': [[url],{'refer': url,'dir':resourcefolder+"/lib/"+artist+"/"+b}],
+                                        'params': [[url],dicta],
                                         }).encode()
             c = urlopen('http://localhost:'+rpcport+'/jsonrpc', jsonreq)
             litelogger.infolog("Send "+url+" to aria")
