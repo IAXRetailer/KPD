@@ -1,10 +1,16 @@
 import os
-def aria2mklist(resourcefolder,artist,customargvs):
-    commandlist=[]
+def sendtorpc(resourcefolder,artist,rpcport):
+    import json
+    from urllib.request import urlopen
+    from . import litelogger
     total=os.listdir(resourcefolder+"/url/"+artist)
     for i in total:
+        urllists=open(resourcefolder+"/url/"+artist+"/"+i,"r",encoding="utf-8").read().splitlines()
         b=i.replace(".txt","")
-        customargvs=customargvs+" "
-        #aria2c --conf-path="...aria2c.conf" --input-file=test-aria2.txt --dir=DIR
-        commandlist.append(f"aria2c {customargvs}--input-file=\""+resourcefolder+"/url/"+artist+"/"+i+"\" --dir=\""+resourcefolder+"/lib/"+artist+"/"+b+"\"")
-    return commandlist
+        for url in urllists:
+            jsonreq = json.dumps({'jsonrpc': '2.0', 'id': 'qwer',
+                                        'method': 'aria2.addUri',#"\""+resourcefolder+"/lib/"+artist+"/"+b+"\""
+                                        'params': [[url],{'refer': url,'dir':resourcefolder+"/lib/"+artist+"/"+b}],
+                                        }).encode()
+            c = urlopen('http://localhost:'+rpcport+'/jsonrpc', jsonreq)
+            litelogger.infolog("Send "+url+" to aria")

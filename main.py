@@ -30,6 +30,11 @@ title='''
 '''
 print(Fore.GREEN+title)
 here=os.getcwd()
+try:
+    os.system("Start aria2c --conf-path=./aria2.conf")
+    api.litelogger.infolog("Launch aria2 Successfully")
+except:
+    api.litelogger.warnlog("Launch aria2 failed,it may be launched before")
 if "resource" not in os.listdir():
     api.litelogger.warnlog("There does't have a resource folder")
     api.litelogger.infolog("Make a resource folder...")
@@ -45,8 +50,6 @@ if "KPD://" in url:
     url=url.replace("KPD://","")
     url=api.b64d(url)
 artist=api.kemono("./resource",url)
-customargvs=open("customargvs.txt","r",encoding="utf-8").read()
-arialist=api.aria2mklist("./resource",artist,customargvs)
-for i in arialist:
-    os.system(i)
+rpcport=open("rpcport.txt","r",encoding="utf-8").read()
+arialist=api.sendtorpc("./resource",artist,rpcport)
 #test action

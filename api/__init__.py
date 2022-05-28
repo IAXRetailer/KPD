@@ -4,7 +4,7 @@ import api.aria2
 import api.hash
 
 kemono=api.kemono.kemono
-aria2mklist=api.aria2.aria2mklist
+sendtorpc=api.aria2.sendtorpc
 
 b64e=api.hash.encode
 b64d=api.hash.decode
