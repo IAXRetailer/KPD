@@ -1,2 +1,2 @@
-自行修改customargvs.txt，里面内容会在生成下载命令时并入，并成为下载参数
-参数详见aria2.conf，或者自行baidu
+自行修改aria2.conf，或者自行bing
+如果下载慢把同时下载数调高点就行了，打开AriaNg/index.html然后点基本设置
