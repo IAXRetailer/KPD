@@ -34,7 +34,7 @@ jobs:
       - name: Run a multi-line script
         run: |
           pip install -r requirements.txt
-          docker run -v $GITHUB_WORKSPACE:/src cdrx/pyinstaller-windows:latest 'pyinstaller -F --clean -y --dist ./ --workpath /tmp main.py'
+          docker run -v $GITHUB_WORKSPACE:/src cdrx/pyinstaller-windows:latest 'pyinstaller -F -i favicon.ico --clean -y --dist ./ --workpath /tmp main.py'
           zip -r $GITHUB_WORKSPACE/main.zip $GITHUB_WORKSPACE/main.exe
          
       - name: Create Release
