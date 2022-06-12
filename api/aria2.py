@@ -1,4 +1,5 @@
 import os
+from requests import get
 def sendtorpc(resourcefolder,artist,rpcport):
     import json
     from urllib.request import urlopen
@@ -15,3 +16,7 @@ def sendtorpc(resourcefolder,artist,rpcport):
                                         }).encode()
             c = urlopen('http://localhost:'+rpcport+'/jsonrpc', jsonreq)
             litelogger.infolog("Send "+url+" to aria")
+
+def aria_rpctest(port):
+    port=str(port)
+    return get(f"http://127.0.0.1:{port}/jsonrpc?jsoncallback=test").status_code

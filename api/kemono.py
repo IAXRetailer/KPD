@@ -2,8 +2,10 @@ import requests
 import os
 from bs4 import BeautifulSoup
 from . import litelogger
+from .vaule import cookie
 headers = {
-    'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE'
+    'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE',
+    'cookie': cookie
 }
 '''
 proxies={
@@ -11,6 +13,7 @@ proxies={
 'https':'127.0.0.1:8080'
 }
 '''
+
 def getpage(url):
     res=requests.get(url,headers=headers)
     res.encoding="utf-8"
@@ -242,13 +245,23 @@ def kemono(resourcefolder,url):
                 Down=keymapping(key, vau)
             if key == "Content":
                 Cont=keymapping(key, vau)
-        target=resourcefolder+"/lib/"+artist+"/"+j+"/content.txt"
+        tgj=j
+        tgjj=tgj
+        while list(tgj)[-1] == " ":
+            tgj=list(tgj).pop(-1)
+            for jj in tgj:
+                tgjj=tgjj+jj
+            tgj=tgjj
+        else:
+            tgj=j
+        target=resourcefolder+"/lib/"+artist+"/"+tgj+"/content.txt"
+        litelogger.infolog(target)
         f=open(target,"w",encoding="utf-8")
         f.write(Cont)
         f.close()
         litelogger.infolog("Make "+artist+" in "+resourcefolder+"/url")
-        ariatodolist=resourcefolder+"/url/"+artist+"/"+j+".txt"
-        litelogger.infolog("Make "+j+".txt")
+        ariatodolist=resourcefolder+"/url/"+artist+"/"+tgj+".txt"
+        litelogger.infolog("Make "+tgj+".txt")
         arialist.append(ariatodolist)
         f=open(ariatodolist,"w",encoding="utf-8")
         for n in File:
